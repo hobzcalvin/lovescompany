@@ -4,7 +4,8 @@ import java.util.*;
 
 OPC opc;
 
-static final boolean DEBUG_ORDER = true;
+static final boolean DEBUG_ORDER = false;
+// XXX: size() should probably change if you change these
 static final int HEIGHT = 10;
 static final int WIDTH = 40;
 static final float CROSSFADE_TIME = 1.0;
@@ -16,7 +17,8 @@ float last_timeleft;
 
 void setup()
 {
-  size(WIDTH*20, HEIGHT*20);
+  // preferably a ratio of WIDTH, HEIGHT
+  size(400, 100);
 
   // Connect to the local instance of fcserver. You can change this line to connect to another computer's fcserver
   opc = new OPC(this, "127.0.0.1", 7890);
@@ -120,10 +122,9 @@ void draw() {
     image(next.get(), 0, 0, width, height);
     noTint();
   }
-  
+  //println(frameRate);
 }
 
 void movieEvent(Movie m) {
   m.read();
 }
-
