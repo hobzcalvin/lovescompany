@@ -4,7 +4,9 @@ import java.util.*;
 
 OPC opc;
 
+static final String VIDEO_DIR = "videos/";
 static final boolean DEBUG_ORDER = false;
+static final boolean DEBUG_WITH_MOUSE = false;
 // XXX: size() should probably change if you change these
 static final int HEIGHT = 10;
 static final int WIDTH = 40;
@@ -24,17 +26,18 @@ void setup()
   opc = new OPC(this, "127.0.0.1", 7890);
   opc.setStatusLed(true);
   for (int i = 0; i < 8; i++) {
-    opc.ledGrid(i*50, HEIGHT, 5, width * (0.5 + i) / 8, height/2, width/WIDTH, height/HEIGHT, 3*HALF_PI, true, true);
+    //opc.ledGrid(i*50, HEIGHT, 5, width * (0.5 + i) / 8, height/2, width/WIDTH, height/HEIGHT, 3*HALF_PI, true, true);
+    opc.ledGrid((7-i)*50, HEIGHT, 5, width * (0.5 + i) / 8, height/2, width/WIDTH, height/HEIGHT, HALF_PI, true, true);
   }
   
   println("LOADING MOVIES...");
   movies = new ArrayList();
-  java.io.File folder = new java.io.File(dataPath("videos"));
+  java.io.File folder = new java.io.File(dataPath(VIDEO_DIR));
   String[] filenames = folder.list();
   for (String f : filenames) {
     println(f);
     if (!f.equals(".DS_Store")) {
-      Movie m = new Movie(this, "videos/"+f);
+      Movie m = new Movie(this, VIDEO_DIR+f);
       // This loads the movie into memory? Avoids playback skipping later.
       m.play();
       // Must be while playing, so not after pause()
@@ -123,6 +126,11 @@ void draw() {
     noTint();
   }
   //println(frameRate);
+  
+  if (DEBUG_WITH_MOUSE) {
+    background(0);
+    ellipse(mouseX, mouseY, 50, 50);
+  }
 }
 
 void movieEvent(Movie m) {
